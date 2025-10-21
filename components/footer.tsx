@@ -1,6 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/auth-context"
+import { Lock } from "lucide-react"
 
 interface FooterProps {
   locale: "en" | "ne"
@@ -23,6 +26,19 @@ const footerLinks = {
 
 export default function Footer({ locale }: FooterProps) {
   const links = footerLinks[locale]
+  const { isAuthenticated } = useAuth()
+  const router = useRouter()
+
+  // Protected routes that require authentication
+  const protectedRoutes = ['/circles', '/proposals', '/tokens', '/activity']
+
+  const handleProtectedLink = (href: string, e: React.MouseEvent) => {
+    if (protectedRoutes.includes(href) && !isAuthenticated) {
+      e.preventDefault()
+      // Redirect to login with return URL
+      router.push(`/login?returnUrl=${encodeURIComponent(href)}`)
+    }
+  }
 
   return (
     <footer className="bg-primary text-primary-foreground border-t border-primary-foreground/20 mt-16">
@@ -40,18 +56,51 @@ export default function Footer({ locale }: FooterProps) {
             <h4 className="font-semibold mb-4">{locale === "en" ? "Platform" : "मञ्च"}</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/circles" className="text-primary-foreground/80 hover:text-primary-foreground">
+                <Link 
+                  href="/circles" 
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  onClick={(e) => handleProtectedLink('/circles', e)}
+                >
                   {locale === "en" ? "Circles" : "सर्कलहरु"}
+                  {!isAuthenticated && (
+                    <Lock className="ml-1 h-3 w-3 opacity-60" />
+                  )}
                 </Link>
               </li>
               <li>
-                <Link href="/proposals" className="text-primary-foreground/80 hover:text-primary-foreground">
+                <Link 
+                  href="/proposals" 
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  onClick={(e) => handleProtectedLink('/proposals', e)}
+                >
                   {locale === "en" ? "Proposals" : "प्रस्तावहरु"}
+                  {!isAuthenticated && (
+                    <Lock className="ml-1 h-3 w-3 opacity-60" />
+                  )}
                 </Link>
               </li>
               <li>
-                <Link href="/tokens" className="text-primary-foreground/80 hover:text-primary-foreground">
+                <Link 
+                  href="/tokens" 
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  onClick={(e) => handleProtectedLink('/tokens', e)}
+                >
                   {locale === "en" ? "Tokens" : "टोकनहरु"}
+                  {!isAuthenticated && (
+                    <Lock className="ml-1 h-3 w-3 opacity-60" />
+                  )}
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/activity" 
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  onClick={(e) => handleProtectedLink('/activity', e)}
+                >
+                  {locale === "en" ? "Activity" : "गतिविधि"}
+                  {!isAuthenticated && (
+                    <Lock className="ml-1 h-3 w-3 opacity-60" />
+                  )}
                 </Link>
               </li>
             </ul>

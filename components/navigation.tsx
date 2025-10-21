@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Menu, X, User, LogOut } from "lucide-react"
+import { Menu, X, User, LogOut, Lock } from "lucide-react"
 import { useState } from "react"
 import Image from "next/image"
 import { useAuth } from "@/contexts/auth-context"
@@ -89,50 +89,95 @@ export default function Navigation({ locale, setLocale }: NavigationProps) {
             >
               {t.home}
             </Link>
-            {isAuthenticated && (
-              <>
-                <Link 
-                  href="/circles" 
-                  className={`hover:opacity-80 transition text-sm font-medium relative ${
-                    isActive("/circles") 
-                      ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
-                      : ""
-                  }`}
-                >
-                  {t.circles}
-                </Link>
-                <Link 
-                  href="/proposals" 
-                  className={`hover:opacity-80 transition text-sm font-medium relative ${
-                    isActive("/proposals") 
-                      ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
-                      : ""
-                  }`}
-                >
-                  {t.proposals}
-                </Link>
-                <Link 
-                  href="/tokens" 
-                  className={`hover:opacity-80 transition text-sm font-medium relative ${
-                    isActive("/tokens") 
-                      ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
-                      : ""
-                  }`}
-                >
-                  {t.tokens}
-                </Link>
-                <Link 
-                  href="/activity" 
-                  className={`hover:opacity-80 transition text-sm font-medium relative ${
-                    isActive("/activity") 
-                      ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
-                      : ""
-                  }`}
-                >
-                  {t.activity}
-                </Link>
-              </>
+            
+            {/* Circles */}
+            {isAuthenticated ? (
+              <Link 
+                href="/circles" 
+                className={`hover:opacity-80 transition text-sm font-medium relative ${
+                  isActive("/circles") 
+                    ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
+                    : ""
+                }`}
+              >
+                {t.circles}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/circles" 
+                className="hover:opacity-80 transition text-sm font-medium flex items-center gap-1 opacity-70"
+              >
+                <Lock size={14} />
+                {t.circles}
+              </Link>
             )}
+            
+            {/* Proposals */}
+            {isAuthenticated ? (
+              <Link 
+                href="/proposals" 
+                className={`hover:opacity-80 transition text-sm font-medium relative ${
+                  isActive("/proposals") 
+                    ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
+                    : ""
+                }`}
+              >
+                {t.proposals}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/proposals" 
+                className="hover:opacity-80 transition text-sm font-medium flex items-center gap-1 opacity-70"
+              >
+                <Lock size={14} />
+                {t.proposals}
+              </Link>
+            )}
+            
+            {/* Tokens */}
+            {isAuthenticated ? (
+              <Link 
+                href="/tokens" 
+                className={`hover:opacity-80 transition text-sm font-medium relative ${
+                  isActive("/tokens") 
+                    ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
+                    : ""
+                }`}
+              >
+                {t.tokens}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/tokens" 
+                className="hover:opacity-80 transition text-sm font-medium flex items-center gap-1 opacity-70"
+              >
+                <Lock size={14} />
+                {t.tokens}
+              </Link>
+            )}
+            
+            {/* Activity */}
+            {isAuthenticated ? (
+              <Link 
+                href="/activity" 
+                className={`hover:opacity-80 transition text-sm font-medium relative ${
+                  isActive("/activity") 
+                    ? "text-accent font-semibold after:absolute after:bottom-[-8px] after:left-0 after:right-0 after:h-0.5 after:bg-accent after:rounded-full" 
+                    : ""
+                }`}
+              >
+                {t.activity}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/activity" 
+                className="hover:opacity-80 transition text-sm font-medium flex items-center gap-1 opacity-70"
+              >
+                <Lock size={14} />
+                {t.activity}
+              </Link>
+            )}
+            
             <Link 
               href="/manifesto" 
               className={`hover:opacity-80 transition text-sm font-medium relative ${
@@ -212,42 +257,87 @@ export default function Navigation({ locale, setLocale }: NavigationProps) {
             >
               {t.home}
             </Link>
-            {isAuthenticated && (
-              <>
-                <Link 
-                  href="/circles" 
-                  className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
-                    isActive("/circles") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
-                  }`}
-                >
-                  {t.circles}
-                </Link>
-                <Link 
-                  href="/proposals" 
-                  className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
-                    isActive("/proposals") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
-                  }`}
-                >
-                  {t.proposals}
-                </Link>
-                <Link 
-                  href="/tokens" 
-                  className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
-                    isActive("/tokens") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
-                  }`}
-                >
-                  {t.tokens}
-                </Link>
-                <Link 
-                  href="/activity" 
-                  className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
-                    isActive("/activity") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
-                  }`}
-                >
-                  {t.activity}
-                </Link>
-              </>
+            
+            {/* Circles */}
+            {isAuthenticated ? (
+              <Link 
+                href="/circles" 
+                className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
+                  isActive("/circles") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
+                }`}
+              >
+                {t.circles}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/circles" 
+                className="block px-4 py-2 hover:bg-primary/20 rounded transition opacity-70 flex items-center gap-2"
+              >
+                <Lock size={16} />
+                {t.circles}
+              </Link>
             )}
+            
+            {/* Proposals */}
+            {isAuthenticated ? (
+              <Link 
+                href="/proposals" 
+                className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
+                  isActive("/proposals") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
+                }`}
+              >
+                {t.proposals}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/proposals" 
+                className="block px-4 py-2 hover:bg-primary/20 rounded transition opacity-70 flex items-center gap-2"
+              >
+                <Lock size={16} />
+                {t.proposals}
+              </Link>
+            )}
+            
+            {/* Tokens */}
+            {isAuthenticated ? (
+              <Link 
+                href="/tokens" 
+                className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
+                  isActive("/tokens") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
+                }`}
+              >
+                {t.tokens}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/tokens" 
+                className="block px-4 py-2 hover:bg-primary/20 rounded transition opacity-70 flex items-center gap-2"
+              >
+                <Lock size={16} />
+                {t.tokens}
+              </Link>
+            )}
+            
+            {/* Activity */}
+            {isAuthenticated ? (
+              <Link 
+                href="/activity" 
+                className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${
+                  isActive("/activity") ? "bg-accent/20 text-accent font-semibold border-l-4 border-accent" : ""
+                }`}
+              >
+                {t.activity}
+              </Link>
+            ) : (
+              <Link 
+                href="/login?returnUrl=/activity" 
+                className="block px-4 py-2 hover:bg-primary/20 rounded transition opacity-70 flex items-center gap-2"
+              >
+                <Lock size={16} />
+                {t.activity}
+              </Link>
+            )}
+            
             <Link 
               href="/manifesto" 
               className={`block px-4 py-2 hover:bg-primary/20 rounded transition ${

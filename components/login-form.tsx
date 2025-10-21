@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -68,15 +68,18 @@ export default function LoginForm({ locale }: LoginFormProps) {
   const { toast } = useToast()
   const { login, isLoading, isAuthenticated } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const t = content[locale]
+  const returnUrl = searchParams.get('returnUrl') || '/'
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/')
+      const returnUrl = searchParams.get('returnUrl') || '/circles'
+      router.push(returnUrl)
     }
-  }, [isAuthenticated, router])
+  }, [isAuthenticated, router, searchParams])
 
   const validateForm = () => {
     if (!phone) {
@@ -134,7 +137,9 @@ export default function LoginForm({ locale }: LoginFormProps) {
           title: t.loginSuccess,
           description: locale === "en" ? "Welcome back, Prem Regmi!" : "स्वागतम, प्रेम रेग्मी!",
         })
-        router.push('/')
+        // Redirect after successful login
+        const returnUrl = searchParams.get('returnUrl') || '/circles'
+        router.push(returnUrl)
       } else {
         toast({
           title: locale === "en" ? "Login Failed" : "लगइन असफल",

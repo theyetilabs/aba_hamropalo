@@ -188,7 +188,7 @@ const mockDiscussionComments: Comment[] = [
         role: "expert",
         timestamp: "4 hours ago",
         content:
-          "Estimated cost: $2-3 million for initial setup and $500K annually for maintenance. This includes infrastructure, training, and security audits.",
+          "Estimated cost: NPR 25-30 crore for initial setup and NPR 5 crore annually for maintenance. This includes infrastructure, training, and security audits.",
         upvotes: 22,
         downvotes: 0,
         replies: [],
@@ -365,7 +365,7 @@ export default function DeliberationWorkspace({ locale, proposalId }: Deliberati
                 <div>
                   <h4 className="font-semibold mb-2">Financial Impact</h4>
                   <p className="text-sm text-foreground">
-                    Initial investment: $2-3 million. Annual maintenance: $500K. ROI expected within 3 years through
+                    Initial investment: NPR 25-30 crore. Annual maintenance: NPR 5 crore. ROI expected within 3 years through
                     increased participation and reduced administrative costs.
                   </p>
                 </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -113,9 +114,20 @@ const mockProposals: UserProposal[] = [
 ]
 
 export default function ProposalManagementDashboard({ locale }: ProposalManagementDashboardProps) {
-  const t = content[locale]
   const [searchTerm, setSearchTerm] = useState("")
+  const [activeTab, setActiveTab] = useState("all")
   const [proposals, setProposals] = useState<UserProposal[]>(mockProposals)
+  const router = useRouter()
+  const t = content[locale]
+
+  const handleCreateNewProposal = () => {
+    router.push('/proposals/submit')
+  }
+
+  const handleProposalClick = (proposalId: string) => {
+    // Navigate to the dedicated proposal detail page
+    router.push(`/proposals/${proposalId}`)
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -167,10 +179,10 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
         {/* Header */}
         <div className="mb-12 flex items-start justify-between">
           <div>
-            <h1 className="text-4xl font-bold mb-2 text-primary">{t.title}</h1>
+            <h1 className="text-4xl font-bold mb-2 text-blue-600">{t.title}</h1>
             <p className="text-lg text-muted-foreground">{t.subtitle}</p>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleCreateNewProposal}>
             <FileText className="h-4 w-4 mr-2" />
             {t.createNew}
           </Button>
@@ -203,7 +215,7 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
             {filteredProposals.length > 0 ? (
               <div className="space-y-4">
                 {filteredProposals.map((proposal) => (
-                  <Card key={proposal.id} className="hover:shadow-md transition-shadow">
+                  <Card key={proposal.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleProposalClick(proposal.id)}>
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
@@ -224,7 +236,7 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleProposalClick(proposal.id); }}>
                             <Eye className="h-4 w-4" />
                           </Button>
                           {proposal.status === "draft" && (
@@ -257,7 +269,7 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
             {draftProposals.length > 0 ? (
               <div className="space-y-4">
                 {draftProposals.map((proposal) => (
-                  <Card key={proposal.id}>
+                  <Card key={proposal.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleProposalClick(proposal.id)}>
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
@@ -265,10 +277,10 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
                           <p className="text-sm text-muted-foreground">{proposal.circle}</p>
                         </div>
                         <div className="flex gap-2">
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
                             <Edit2 className="h-4 w-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -291,7 +303,7 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
             {activeProposals.length > 0 ? (
               <div className="space-y-4">
                 {activeProposals.map((proposal) => (
-                  <Card key={proposal.id}>
+                  <Card key={proposal.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleProposalClick(proposal.id)}>
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
@@ -304,7 +316,7 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
                             {t.votes}: {proposal.votes}
                           </p>
                         </div>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleProposalClick(proposal.id); }}>
                           <Eye className="h-4 w-4" />
                         </Button>
                       </div>
@@ -326,7 +338,7 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
             {completedProposals.length > 0 ? (
               <div className="space-y-4">
                 {completedProposals.map((proposal) => (
-                  <Card key={proposal.id}>
+                  <Card key={proposal.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => handleProposalClick(proposal.id)}>
                     <CardContent className="pt-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
@@ -339,7 +351,7 @@ export default function ProposalManagementDashboard({ locale }: ProposalManageme
                             {t.votes}: {proposal.votes}
                           </p>
                         </div>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); handleProposalClick(proposal.id); }}>
                           <Eye className="h-4 w-4" />
                         </Button>
                       </div>

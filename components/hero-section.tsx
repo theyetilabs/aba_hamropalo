@@ -156,11 +156,11 @@ export default function HeroSection({ locale }: HeroSectionProps) {
               'from-blue-600/40 to-cyan-500/40',
               'from-indigo-600/40 to-purple-500/40', 
               'from-emerald-600/40 to-green-500/40',
-              'from-amber-600/40 to-yellow-500/40',
+              'from-primary/40 to-blue-500/40',
               'from-rose-600/40 to-pink-500/40',
               'from-violet-600/40 to-purple-500/40'
             ];
-            const textColors = ['text-blue-100', 'text-indigo-100', 'text-emerald-100', 'text-amber-100', 'text-rose-100', 'text-violet-100'];
+            const textColors = ['text-blue-100', 'text-indigo-100', 'text-emerald-100', 'text-blue-100', 'text-rose-100', 'text-violet-100'];
             return (
               <div
                 key={`election-icon-${i}`}
@@ -234,13 +234,13 @@ export default function HeroSection({ locale }: HeroSectionProps) {
               { right: '10%', top: '80%' }
             ];
             const gradients = [
-              'from-amber-600/40 to-yellow-500/40',
+              'from-primary/40 to-blue-500/40',
               'from-emerald-600/40 to-green-500/40',
               'from-blue-600/40 to-cyan-500/40',
               'from-rose-600/40 to-pink-500/40'
             ];
             const textColors = [
-              'text-amber-100', 'text-emerald-100', 'text-blue-100', 'text-rose-100'
+              'text-blue-100', 'text-emerald-100', 'text-blue-100', 'text-rose-100'
             ];
             return (
               <div
