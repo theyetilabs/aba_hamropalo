@@ -6,6 +6,9 @@ interface User {
   id: string
   name: string
   phone: string
+  tokens: number
+  isVerified: boolean
+  verificationLevel: 'basic' | 'enhanced' | 'complete'
 }
 
 interface AuthContextType {
@@ -25,7 +28,10 @@ const DEMO_USER = {
   userData: {
     id: '1',
     name: 'Prem Regmi',
-    phone: '9802834141'
+    phone: '9802834141',
+    tokens: 1250,
+    isVerified: true,
+    verificationLevel: 'enhanced' as const
   }
 }
 

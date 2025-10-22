@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Bell, Lock, User, Eye } from "lucide-react"
+import { Bell, Lock, User, Eye, ArrowLeft } from "lucide-react"
+import Link from "next/link"
 
 interface SettingsPageProps {
   locale: "en" | "ne"
@@ -17,6 +18,7 @@ const content = {
   en: {
     title: "Settings",
     subtitle: "Manage your account and preferences",
+    backToProfile: "Back to Profile",
     account: "Account",
     privacy: "Privacy",
     notifications: "Notifications",
@@ -71,6 +73,7 @@ const content = {
   ne: {
     title: "सेटिङ्स",
     subtitle: "आपको खाता र प्राथमिकताहरु प्रबन्ध गर्नुहोस्",
+    backToProfile: "प्रोफाइलमा फर्कनुहोस्",
     account: "खाता",
     privacy: "गोपनीयता",
     notifications: "सूचनाहरु",
@@ -133,6 +136,13 @@ export default function SettingsPageComponent({ locale }: SettingsPageProps) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
+          <Link 
+            href="/profile" 
+            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 mb-4 transition-colors"
+          >
+            <ArrowLeft size={20} />
+            {t.backToProfile}
+          </Link>
           <h1 className="text-4xl font-bold text-primary mb-2">{t.title}</h1>
           <p className="text-lg text-muted-foreground">{t.subtitle}</p>
         </div>

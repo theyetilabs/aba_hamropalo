@@ -17,8 +17,12 @@ import {
   Shield, 
   Calendar,
   Search,
-  Filter
+  Filter,
+  ArrowLeft,
+  User,
+  Edit
 } from "lucide-react"
+import Link from "next/link"
 
 interface ActivityLogProps {
   locale: "en" | "ne"
@@ -28,12 +32,14 @@ const content = {
   en: {
     title: "Activity Log",
     subtitle: "Track all activities and events on the platform",
+    backToProfile: "Back to Profile",
     searchPlaceholder: "Search activities...",
     filterAll: "All Activities",
     filterProposals: "Proposals",
     filterVoting: "Voting",
     filterComments: "Comments",
     filterUsers: "User Actions",
+    filterDashboard: "Dashboard",
     filterSystem: "System Events",
     timeAgo: {
       now: "Just now",
@@ -55,6 +61,9 @@ const content = {
       user_verified: "completed verification",
       circle_joined: "joined circle",
       circle_created: "created new circle",
+      profile_edit: "updated their profile",
+      settings_update: "changed account settings",
+      disclosure_update: "updated disclosure information",
       system_update: "System updated",
       maintenance: "Maintenance completed",
     }
@@ -62,12 +71,14 @@ const content = {
   ne: {
     title: "गतिविधि लग",
     subtitle: "प्ल्याटफर्ममा सबै गतिविधि र घटनाहरू ट्र्याक गर्नुहोस्",
+    backToProfile: "प्रोफाइलमा फर्कनुहोस्",
     searchPlaceholder: "गतिविधिहरू खोज्नुहोस्...",
     filterAll: "सबै गतिविधिहरू",
     filterProposals: "प्रस्तावहरू",
     filterVoting: "मतदान",
     filterComments: "टिप्पणीहरू",
     filterUsers: "प्रयोगकर्ता कार्यहरू",
+    filterDashboard: "ड्यासबोर्ड",
     filterSystem: "प्रणाली घटनाहरू",
     timeAgo: {
       now: "अहिले",
@@ -89,6 +100,9 @@ const content = {
       user_verified: "प्रमाणीकरण पूरा गर्यो",
       circle_joined: "सर्कलमा सामेल भयो",
       circle_created: "नयाँ सर्कल सिर्जना गर्यो",
+      profile_edit: "आफ्नो प्रोफाइल अपडेट गर्यो",
+      settings_update: "खाता सेटिङ्स परिवर्तन गर्यो",
+      disclosure_update: "खुलासा जानकारी अपडेट गर्यो",
       system_update: "प्रणाली अपडेट भयो",
       maintenance: "मर्मत पूरा भयो",
     }
@@ -226,6 +240,45 @@ const demoActivities = [
     description: "Joined circle focused on youth empowerment and education",
     timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
     category: "users"
+  },
+  {
+    id: "11",
+    type: "profile_edit",
+    user: {
+      name: "अर्जुन पोखरेल",
+      avatar: "/placeholder-user.jpg",
+      initials: "अप"
+    },
+    title: "Profile Information Updated",
+    description: "Updated personal information and contact details",
+    timestamp: new Date(Date.now() - 45 * 60 * 1000), // 45 minutes ago
+    category: "dashboard"
+  },
+  {
+    id: "12",
+    type: "settings_update",
+    user: {
+      name: "मीरा शर्मा",
+      avatar: "/placeholder-user.jpg",
+      initials: "मीश"
+    },
+    title: "Account Settings Modified",
+    description: "Changed notification preferences and privacy settings",
+    timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
+    category: "dashboard"
+  },
+  {
+    id: "13",
+    type: "disclosure_update",
+    user: {
+      name: "बिनोद तामाङ",
+      avatar: "/placeholder-user.jpg",
+      initials: "बित"
+    },
+    title: "Disclosure Information Updated",
+    description: "Added new financial disclosure and updated portfolio information",
+    timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
+    category: "dashboard"
   }
 ]
 
@@ -243,6 +296,12 @@ const getActivityIcon = (type: string) => {
     case "circle_joined":
     case "circle_created":
       return <UserPlus className="w-4 h-4" />
+    case "profile_edit":
+      return <User className="w-4 h-4" />
+    case "settings_update":
+      return <Settings className="w-4 h-4" />
+    case "disclosure_update":
+      return <Edit className="w-4 h-4" />
     case "system_update":
     case "maintenance":
       return <Settings className="w-4 h-4" />
@@ -265,6 +324,12 @@ const getActivityColor = (type: string) => {
     case "circle_joined":
     case "circle_created":
       return "bg-blue-500"
+    case "profile_edit":
+      return "bg-purple-500"
+    case "settings_update":
+      return "bg-orange-500"
+    case "disclosure_update":
+      return "bg-indigo-500"
     case "system_update":
     case "maintenance":
       return "bg-gray-500"
@@ -312,6 +377,13 @@ export default function ActivityLog({ locale }: ActivityLogProps) {
   return (
     <div className="space-y-6">
       <div>
+        <Link 
+          href="/profile" 
+          className="inline-flex items-center gap-2 text-primary hover:text-primary/80 mb-4 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          {t.backToProfile}
+        </Link>
         <h1 className="text-3xl font-bold text-foreground">{t.title}</h1>
         <p className="text-muted-foreground mt-2">{t.subtitle}</p>
       </div>
@@ -341,6 +413,7 @@ export default function ActivityLog({ locale }: ActivityLogProps) {
                   <SelectItem value="voting">{t.filterVoting}</SelectItem>
                   <SelectItem value="comments">{t.filterComments}</SelectItem>
                   <SelectItem value="users">{t.filterUsers}</SelectItem>
+                  <SelectItem value="dashboard">{t.filterDashboard}</SelectItem>
                   <SelectItem value="system">{t.filterSystem}</SelectItem>
                 </SelectContent>
               </Select>

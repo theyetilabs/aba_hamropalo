@@ -51,6 +51,11 @@ const content = {
     ],
     notes: "Notes",
     noNotes: "No additional notes",
+    additionalOpportunities: "Additional Opportunities",
+    factCheckEnrollment: "Become a Fact-Checker",
+    factCheckDescription: "Join our community of verified fact-checkers",
+    manifestoAgreement: "Manifesto Agreement",
+    manifestoDescription: "Read and agree to our community manifesto",
   },
   ne: {
     title: "KYC प्रमाणीकरण स्थिति",
@@ -83,6 +88,11 @@ const content = {
     ],
     notes: "नोटहरु",
     noNotes: "कुनै अतिरिक्त नोट छैन",
+    additionalOpportunities: "अतिरिक्त अवसरहरू",
+    factCheckEnrollment: "तथ्य-जाँचकर्ता बन्नुहोस्",
+    factCheckDescription: "हाम्रो प्रमाणित तथ्य-जाँचकर्ताहरूको समुदायमा सामेल हुनुहोस्",
+    manifestoAgreement: "घोषणापत्र सम्झौता",
+    manifestoDescription: "हाम्रो सामुदायिक घोषणापत्र पढ्नुहोस् र सहमत हुनुहोस्",
   },
 }
 
@@ -199,6 +209,31 @@ export default function KYCStatusDashboard({ locale }: KYCStatusDashboardProps) 
                           <p className="text-sm text-muted-foreground">{step.notes}</p>
                         </div>
                       )}
+                      
+                      {/* Action buttons for specific verification steps */}
+                      <div className="mt-3 flex gap-2">
+                        {step.id === "address" && (
+                          <Button asChild variant="outline" size="sm">
+                            <Link href="/address-verification">{t.viewDetails}</Link>
+                          </Button>
+                        )}
+                        {step.id === "citizenship" && (
+                          <Button asChild variant="outline" size="sm">
+                            <Link href="/citizenship-verification">{t.viewDetails}</Link>
+                          </Button>
+                        )}
+                        {step.status === "rejected" && (
+                          <Button asChild variant="default" size="sm">
+                            <Link href={
+                              step.id === "address" ? "/address-verification" :
+                              step.id === "citizenship" ? "/citizenship-verification" :
+                              "/reverify"
+                            }>
+                              {t.resubmit}
+                            </Link>
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div>{getStatusBadge(step.status)}</div>
@@ -216,7 +251,7 @@ export default function KYCStatusDashboard({ locale }: KYCStatusDashboardProps) 
             </CardHeader>
             <CardContent>
               <p className="text-green-800 mb-4">{t.nextStepsText}</p>
-              <ul className="space-y-2">
+              <ul className="space-y-2 mb-6">
                 {t.benefits.map((benefit, index) => (
                   <li key={index} className="flex items-center gap-3 text-green-800">
                     <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
@@ -224,6 +259,30 @@ export default function KYCStatusDashboard({ locale }: KYCStatusDashboardProps) 
                   </li>
                 ))}
               </ul>
+              
+              {/* Additional Opportunities */}
+              <div className="border-t border-green-200 pt-4">
+                <h4 className="font-semibold text-green-900 mb-3">{t.additionalOpportunities}</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Button asChild variant="outline" className="justify-start h-auto p-4 border-green-300 hover:bg-green-100">
+                    <Link href="/fact-check?mode=enrollment">
+                      <div className="text-left">
+                        <div className="font-medium text-green-900">{t.factCheckEnrollment}</div>
+                        <div className="text-sm text-green-700">{t.factCheckDescription}</div>
+                      </div>
+                    </Link>
+                  </Button>
+                  
+                  <Button asChild variant="outline" className="justify-start h-auto p-4 border-green-300 hover:bg-green-100">
+                    <Link href="/manifesto-agreement">
+                      <div className="text-left">
+                        <div className="font-medium text-green-900">{t.manifestoAgreement}</div>
+                        <div className="text-sm text-green-700">{t.manifestoDescription}</div>
+                      </div>
+                    </Link>
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         )}

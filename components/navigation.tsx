@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Menu, X, User, LogOut, Lock } from "lucide-react"
+import { Menu, X, User, LogOut, Lock, Coins, Shield, Eye, CheckCircle } from "lucide-react"
 import { useState } from "react"
 import Image from "next/image"
 import { useAuth } from "@/contexts/auth-context"
@@ -11,6 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 
 interface NavigationProps {
@@ -31,6 +32,9 @@ const content = {
     signup: "Sign Up",
     logout: "Logout",
     profile: "Profile",
+    viewDetails: "View Details",
+    verified: "Verified",
+    tokensCount: "Tokens",
   },
   ne: {
     home: "गृह",
@@ -44,6 +48,9 @@ const content = {
     signup: "साइन अप",
     logout: "लगआउट",
     profile: "प्रोफाइल",
+    viewDetails: "विवरण हेर्नुहोस्",
+    verified: "प्रमाणित",
+    tokensCount: "टोकनहरु",
   },
 }
 
@@ -211,9 +218,39 @@ export default function Navigation({ locale, setLocale }: NavigationProps) {
                   >
                     <User size={16} />
                     <span className="font-medium">{user?.name}</span>
+                    {user?.isVerified && (
+                      <CheckCircle size={14} className="text-green-500" />
+                    )}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className="w-56">
+                  {/* User Info Section */}
+                  <div className="px-3 py-2 border-b">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-medium text-sm">{user?.name}</span>
+                      {user?.isVerified && (
+                        <div className="flex items-center gap-1 bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs">
+                          <Shield size={10} />
+                          {t.verified}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Coins size={12} />
+                      <span>{user?.tokens} {t.tokensCount}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Menu Items */}
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/profile" className="flex items-center">
+                      <Eye size={16} className="mr-2" />
+                      {t.viewDetails}
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
                   <DropdownMenuItem onClick={logout} className="text-red-600 focus:text-red-600 cursor-pointer">
                     <LogOut size={16} className="mr-2" />
                     {t.logout}
@@ -348,20 +385,55 @@ export default function Navigation({ locale, setLocale }: NavigationProps) {
             </Link>
             
             {isAuthenticated ? (
-              <div className="px-4 py-2 space-y-2">
-                <div className="flex items-center gap-2 text-primary-foreground font-medium">
-                  <User size={16} />
-                  <span>{user?.name}</span>
+              <div className="px-4 py-2 space-y-3">
+                {/* User Info */}
+                <div className="bg-primary/10 rounded-lg p-3 space-y-2">
+                  <div className="flex items-center gap-2 text-primary-foreground font-medium">
+                    <User size={16} />
+                    <span>{user?.name}</span>
+                    {user?.isVerified && (
+                      <CheckCircle size={14} className="text-green-500" />
+                    )}
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-sm text-primary-foreground/70">
+                      <Coins size={12} />
+                      <span>{user?.tokens} {t.tokensCount}</span>
+                    </div>
+                    {user?.isVerified && (
+                      <div className="flex items-center gap-1 bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs">
+                        <Shield size={10} />
+                        {t.verified}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <Button
-                  onClick={logout}
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white bg-transparent flex items-center gap-2"
-                >
-                  <LogOut size={16} />
-                  {t.logout}
-                </Button>
+                
+                {/* Action Buttons */}
+                <div className="space-y-2">
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary bg-transparent flex items-center gap-2"
+                  >
+                    <Link href="/profile">
+                      <Eye size={16} />
+                      {t.viewDetails}
+                    </Link>
+                  </Button>
+                  
+                  <Button
+                    onClick={logout}
+                    variant="outline"
+                    size="sm"
+                    className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white bg-transparent flex items-center gap-2"
+                  >
+                    <LogOut size={16} />
+                    {t.logout}
+                  </Button>
+                </div>
               </div>
             ) : (
               <div className="px-4 py-2 flex gap-2">

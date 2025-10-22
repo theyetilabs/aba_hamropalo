@@ -12,9 +12,48 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { AlertCircle, CheckCircle2, Upload } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import EnhancedDisclosures from "@/components/enhanced-disclosures"
 
 interface VerificationFormProps {
   locale: "en" | "ne"
+}
+
+interface Allegation {
+  id: string
+  type: string
+  description: string
+  status: string
+  date: string
+  documents: File[]
+}
+
+interface PortfolioItem {
+  id: string
+  type: string
+  organization: string
+  position: string
+  startDate: string
+  endDate?: string
+  description: string
+  isActive: boolean
+}
+
+interface FinancialInterest {
+  id: string
+  type: string
+  entity: string
+  value: string
+  percentage?: string
+  description: string
+  isConflict: boolean
+}
+
+interface DisclosureData {
+  allegations: Allegation[]
+  portfolio: PortfolioItem[]
+  financialInterests: FinancialInterest[]
+  hasNoDisclosures: boolean
+  additionalNotes: string
 }
 
 const content = {
@@ -124,18 +163,37 @@ export default function VerificationForm({ locale }: VerificationFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    address: string
+    citizenship: string
+    dateOfBirth: string
+    idType: string
+    idNumber: string
+    idFile: File | null
+    fullName: string
+    email: string
+    phone: string
+    occupation: string
+    disclosures: DisclosureData
+    agreeTerms: boolean
+  }>({
     address: "",
     citizenship: "",
     dateOfBirth: "",
     idType: "",
     idNumber: "",
-    idFile: null as File | null,
+    idFile: null,
     fullName: "",
     email: "",
     phone: "",
     occupation: "",
-    disclosures: "",
+    disclosures: {
+      allegations: [],
+      portfolio: [],
+      financialInterests: [],
+      hasNoDisclosures: false,
+      additionalNotes: ""
+    },
     agreeTerms: false,
   })
 
@@ -453,16 +511,14 @@ export default function VerificationForm({ locale }: VerificationFormProps) {
                 </div>
 
                 <div>
-                  <Label htmlFor="disclosures">{t.disclosures}</Label>
-                  <p className="text-xs text-muted-foreground mb-2">{t.disclosuresHint}</p>
-                  <textarea
-                    id="disclosures"
-                    name="disclosures"
-                    value={formData.disclosures}
-                    onChange={handleInputChange}
-                    placeholder={t.disclosuresPlaceholder}
-                    className="w-full border border-border rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    rows={4}
+                  <Label className="text-base font-medium">{t.disclosures}</Label>
+                  <p className="text-xs text-muted-foreground mb-4">{t.disclosuresHint}</p>
+                  <EnhancedDisclosures
+                    locale={locale}
+                    onDisclosureChange={(disclosures) => {
+                      setFormData(prev => ({ ...prev, disclosures }))
+                    }}
+                    initialData={formData.disclosures}
                   />
                 </div>
               </div>
