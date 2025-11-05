@@ -1,0 +1,29 @@
+```yaml
+name: Deploy Main to Vercel
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '*.md'
+      - 'README*'
+      - '.gitignore'  # Skip non-code changes
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Production Deploy
+        run: |
+          RESPONSE=$(curl -s -w "HTTPSTATUS:%{http_code}" -X POST \
+            -H "Content-Type: application/json" \
+            "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" \
+            -d '{"name": "Production Deploy Triggered by GitHub Action"}')
+          
+          HTTPSTATUS=$(echo $RESPONSE | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+          if [ "$HTTPSTATUS" -eq 200 ]; then
+            echo "✅ Deploy triggered successfully!"
+          else
+            echo "❌ Deploy failed with status: $HTTPSTATUS"
+            exit 1
+          fi
