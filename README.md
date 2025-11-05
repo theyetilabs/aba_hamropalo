@@ -1,2 +1,2 @@
 .
-test from labsyeti deploy hooks
+test from labsyeti deploy hooks.
